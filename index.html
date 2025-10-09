@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inszone Policy Analysis Tools</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #00334D 0%, #004d73 100%);
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 50px;
+      animation: fadeInDown 0.8s ease-out;
+    }
+
+    .logo {
+      margin-bottom: 30px;
+    }
+
+    .logo img {
+      width: 200px;
+      height: auto;
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+    }
+
+    .header h1 {
+      color: white;
+      font-size: 42px;
+      margin-bottom: 15px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .header p {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 18px;
+      max-width: 700px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+
+    .tool-card {
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: fadeInUp 0.8s ease-out;
+      animation-fill-mode: both;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tool-card:nth-child(1) { animation-delay: 0.1s; }
+    .tool-card:nth-child(2) { animation-delay: 0.2s; }
+    .tool-card:nth-child(3) { animation-delay: 0.3s; }
+    .tool-card:nth-child(4) { animation-delay: 0.4s; }
+    .tool-card:nth-child(5) { animation-delay: 0.5s; }
+    .tool-card:nth-child(6) { animation-delay: 0.6s; }
+
+    .tool-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .tool-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, #00334D, #0066A1);
+    }
+
+    .tool-card.compare::before {
+      background: linear-gradient(90deg, #2196f3, #64b5f6);
+    }
+
+    .tool-card.verify::before {
+      background: linear-gradient(90deg, #ff9800, #ffb74d);
+    }
+
+    .tool-card.app-verify::before {
+      background: linear-gradient(90deg, #c41e3a, #e53935);
+    }
+
+    .tool-card.gap::before {
+      background: linear-gradient(90deg, #673ab7, #9575cd);
+    }
+
+    .tool-card.review::before {
+      background: linear-gradient(90deg, #009688, #4db6ac);
+    }
+
+    .tool-icon {
+      display: none;
+    }
+
+    .tool-card h2 {
+      color: #333;
+      font-size: 24px;
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+
+    .tool-card p {
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      font-size: 15px;
+    }
+
+    .tool-features {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    .tool-features ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .tool-features li {
+      color: #555;
+      font-size: 13px;
+      padding: 5px 0;
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .tool-features li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: #27ae60;
+      font-weight: bold;
+    }
+
+    .tool-button {
+      display: inline-block;
+      width: 100%;
+      padding: 14px 24px;
+      background: #00334D;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      text-align: center;
+      transition: background 0.3s ease, transform 0.2s ease;
+      font-size: 15px;
+    }
+
+    .tool-button:hover {
+      background: #004d73;
+      transform: translateY(-2px);
+    }
+
+    .tool-button:active {
+      transform: translateY(0);
+    }
+
+    .footer {
+      text-align: center;
+      color: rgba(255, 255, 255, 0.8);
+      margin-top: 50px;
+      padding: 20px;
+      font-size: 14px;
+      animation: fadeIn 1s ease-out 0.8s both;
+    }
+
+    .warning-badge {
+      display: inline-block;
+      background: #ffc107;
+      color: #856404;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 32px;
+      }
+
+      .header p {
+        font-size: 16px;
+      }
+
+      .tools-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .tool-card {
+        padding: 25px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">
+        <img src="https://inszoneinsurance.com/wp-content/themes/inszone/images/inszone.png" alt="InsZone Insurance">
+      </div>
+      <h1>Policy Analysis Tools</h1>
+    </div>
+
+    <div class="tools-grid">
+      <div class="tool-card compare">
+        <span class="warning-badge">Alpha</span>
+        <span class="tool-icon">🔄</span>
+        <h2>Policy Comparison</h2>
+        <p>Compare two policy versions side-by-side to identify changes, premium differences, and coverage modifications.</p>
+        <div class="tool-features">
+          <ul>
+            <li>Side-by-side policy comparison</li>
+            <li>Premium change analysis</li>
+            <li>Coverage difference detection</li>
+            <li>Endorsement tracking</li>
+          </ul>
+        </div>
+        <a href="https://qtcomp.inszoneit.com/" class="tool-button">Launch Policy Comparison</a>
+      </div>
+
+      <div class="tool-card review">
+        <span class="warning-badge">Alpha</span>
+        <span class="tool-icon">📋</span>
+        <h2>Policy Review</h2>
+        <p>Comprehensive analysis of a single insurance policy with detailed breakdowns of coverage, limits, and endorsements.</p>
+        <div class="tool-features">
+          <ul>
+            <li>Complete policy analysis</li>
+            <li>Coverage breakdown</li>
+            <li>Endorsement summary</li>
+            <li>Risk exposure overview</li>
+          </ul>
+        </div>
+        <a href="https://inz-ross.github.io/POLREV/" class="tool-button">Launch Policy Review</a>
+      </div>
+
+      <div class="tool-card verify">
+        <span class="warning-badge">Alpha</span>
+        <span class="tool-icon">✓</span>
+        <h2>Policy vs Quote Verification</h2>
+        <p>Verify that issued policies match the original quote specifications, identifying discrepancies and errors.</p>
+        <div class="tool-features">
+          <ul>
+            <li>Quote to policy verification</li>
+            <li>Premium accuracy check</li>
+            <li>Coverage limit matching</li>
+            <li>Approval recommendations</li>
+          </ul>
+        </div>
+        <a href="https://inz-ross.github.io/POLQTCOMP/" class="tool-button">Launch Policy Verification</a>
+      </div>
+
+      <div class="tool-card app-verify">
+        <span class="warning-badge">Alpha</span>
+        <span class="tool-icon">🛡️</span>
+        <h2>Application Verification</h2>
+        <p>E&O protection tool that verifies quote/policy accuracy against the original application to prevent coverage gaps.</p>
+        <div class="tool-features">
+          <ul>
+            <li>Application accuracy check</li>
+            <li>E&O risk assessment</li>
+            <li>Coverage gap detection</li>
+            <li>Discrepancy severity ratings</li>
+          </ul>
+        </div>
+        <a href="https://inz-ross.github.io/POLQTAPP/" class="tool-button">Launch Application Verification</a>
+      </div>
+
+      <div class="tool-card compare">
+        <span class="warning-badge">Alpha</span>
+        <span class="tool-icon">📊</span>
+        <h2>Quote Comparison</h2>
+        <p>Compare multiple insurance quotes side-by-side for easy decision-making and client presentations.</p>
+        <div class="tool-features">
+          <ul>
+            <li>Multi-quote comparison</li>
+            <li>Carrier evaluation</li>
+            <li>Price vs coverage analysis</li>
+            <li>Recommendation engine</li>
+          </ul>
+        </div>
+        <a href="https://qcpc.inszoneit.com/" class="tool-button">Launch Quote Comparison</a>
+      </div>
+
+      <div class="tool-card gap">
+        <span class="warning-badge">Alpha</span>
+        <span class="tool-icon">🔍</span>
+        <h2>Policy Gap Analysis</h2>
+        <p>Identify coverage gaps, risk exposures, and missing protections with prioritized recommendations.</p>
+        <div class="tool-features">
+          <ul>
+            <li>Coverage gap identification</li>
+            <li>Risk exposure analysis</li>
+            <li>Industry standards comparison</li>
+            <li>Prioritized action plan</li>
+          </ul>
+        </div>
+        <a href="https://inz-ross.github.io/POLGAP/" class="tool-button">Launch Gap Analysis</a>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p><strong>Inszone Policy Analysis System v1.0</strong></p>
+      <p style="margin-top: 10px; font-size: 12px; opacity: 0.7;">
+        Not for production use.
+      </p>
+    </div>
+  </div>
+</body>
+</html>
